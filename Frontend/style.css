@@ -1,0 +1,74 @@
+/* Bloomberg Terminal Palette */
+:root {
+    --bg-black: #000000;
+    --terminal-amber: #ffb000;
+    --terminal-green: #00ff00;
+    --terminal-blue: #00ffff;
+    --terminal-red: #ff3e3e;
+    --border-gray: #333333;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace; /* Monospaced is key */
+    background-color: var(--bg-black);
+    color: var(--terminal-amber);
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    margin: 0;
+    text-transform: uppercase; /* Terminals often use all caps for headers */
+}
+
+.container {
+    width: 95%;
+    max-width: 900px;
+    border: 2px solid var(--border-gray);
+    padding: 10px;
+}
+
+h1 {
+    font-size: 1.2rem;
+    border-bottom: 2px solid var(--terminal-amber);
+    padding-bottom: 5px;
+    text-align: left;
+    margin-top: 0;
+}
+
+.search-box {
+    text-align: left;
+    margin-bottom: 15px;
+    background: #111;
+    padding: 5px;
+    border: 1px solid var(--border-gray);
+}
+
+input {
+    background: black;
+    border: 1px solid var(--terminal-amber);
+    color: var(--terminal-amber);
+    padding: 5px;
+    font-family: inherit;
+    outline: none;
+}
+
+button {
+    background: var(--terminal-amber);
+    color: black;
+    border: none;
+    padding: 5px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+button:hover {
+    background: white;
+}
+
+/* The "Card" is now a terminal pane */
+.card {
+    background: black;
+    border: 1px solid var(--border-gray);
+    padding: 15px;
+    margin-top: 10px;
+}
