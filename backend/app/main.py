@@ -14,6 +14,6 @@ app.add_middleware(
 @app.get("/")
 def home():
     return {"message": "API is runing"}
-app.include_router(stock_routes.router, prefix="/stocks")   
+app.include_router(stock_routes.router, prefix="/stock")   
 app.include_router(news_routes.router, prefix="/news")
 app.include_router(dashboard_routes.router, prefix="/dashboard")

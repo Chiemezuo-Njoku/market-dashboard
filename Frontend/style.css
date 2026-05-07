@@ -9,66 +9,133 @@
 }
 
 body {
-    font-family: 'Courier New', Courier, monospace; /* Monospaced is key */
+    font-family: 'Courier New', Courier, monospace;
     background-color: var(--bg-black);
     color: var(--terminal-amber);
+
     display: flex;
     justify-content: center;
+
     padding-top: 20px;
     margin: 0;
-    text-transform: uppercase; /* Terminals often use all caps for headers */
+
+    text-transform: uppercase;
 }
 
 .container {
     width: 95%;
-    max-width: 900px;
+    max-width: 1000px;
+
     border: 2px solid var(--border-gray);
+
     padding: 10px;
 }
 
 h1 {
     font-size: 1.2rem;
+
     border-bottom: 2px solid var(--terminal-amber);
+
     padding-bottom: 5px;
-    text-align: left;
+
     margin-top: 0;
 }
 
 .search-box {
-    text-align: left;
     margin-bottom: 15px;
+
     background: #111;
-    padding: 5px;
+
+    padding: 10px;
+
     border: 1px solid var(--border-gray);
 }
 
 input {
     background: black;
+
     border: 1px solid var(--terminal-amber);
+
     color: var(--terminal-amber);
-    padding: 5px;
+
+    padding: 8px;
+
     font-family: inherit;
+
     outline: none;
+
+    width: 220px;
 }
 
 button {
     background: var(--terminal-amber);
+
     color: black;
+
     border: none;
-    padding: 5px 15px;
+
+    padding: 8px 15px;
+
     font-weight: bold;
+
     cursor: pointer;
+
     font-family: inherit;
+
+    margin-left: 5px;
 }
 
 button:hover {
     background: white;
 }
 
-/* The "Card" is now a terminal pane */
+/* Terminal Cards */
 .card {
     background: black;
+
     border: 1px solid var(--border-gray);
+
     padding: 15px;
+
+    margin-top: 15px;
+}
+
+/* News List */
+.news-list {
+    max-height: 350px;
+
+    overflow-y: auto;
+}
+
+/* Chart Header */
+.chart-header {
+    background: var(--terminal-amber);
+
+    color: black;
+
+    padding: 3px 6px;
+
+    font-weight: bold;
+
+    display: inline-block;
+
+    margin-bottom: 10px;
+}
+
+/* Chart Canvas */
+#stockChart {
+    width: 100%;
+
+    max-height: 400px;
+
     margin-top: 10px;
+}
+
+/* Scrollbar */
+.news-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.news-list::-webkit-scrollbar-thumb {
+    background: var(--terminal-amber);
 }

@@ -3,20 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Market Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
+
     <div class="container">
-        <h1>Market Dashboard 📊</h1>
+        <h1>MARKET TERMINAL 📊</h1>
+
         <div class="search-box">
-            <input type="text" id="tickerInput" placeholder="Enter A stock Ticker (e.g. AAPL)">
-            <button id="searchBtn">Search</button>
+
+            <input
+                type="text"
+                id="tickerInput"
+                placeholder="ENTER TICKER (AAPL)"
+            >
+
+            <button id="searchBtn">
+                SEARCH
+            </button>
+
         </div>
 
-        <div id="resultContainer">
+        <!-- Results -->
+        <div id="resultContainer"></div>
+
+        <!-- Chart Section -->
+        <div class="card">
+
+            <div class="chart-header">
+                PRICE TREND
             </div>
+
+            <canvas id="stockChart"></canvas>
+
+        </div>
+
     </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>
