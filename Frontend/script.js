@@ -1,3 +1,4 @@
+let stockChart;
 document.getElementById('searchBtn').addEventListener('click', async () => {
     const tickerInput = document.getElementById('tickerInput');
     const ticker = tickerInput.value.toUpperCase();
@@ -16,6 +17,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
         if (!response.ok) throw new Error('STATION OFFLINE');
 
         const data = await response.json();
+        loadChart(ticker);
 
         // Build the News Feed
         const newsHtml = data.news.map(item => {
@@ -34,7 +36,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
                         > ${title}
                     </a>
                     <div style="margin-top: 4px; color: #888;">
-                        SRC: ${source} | <span style="color: ${sentColor}">SENT: ${sentiment}</span>
+                        SRC: ${source} | <span style="color: ${sentColor}">SENTIMENT: ${sentiment}</span>
                     </div>
                 </div>
             `;
@@ -70,3 +72,73 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
         `;
     }
 });
+async function loadChart(ticker) {
+
+    const response = await fetch(`http://127.0.0.1:8000/stock/history/${ticker}`);
+
+    const historyData = await response.json();
+
+    const ctx = document.getElementById('stockChart');
+
+    // destroy old chart
+    if (stockChart) {
+        stockChart.destroy();
+    }
+
+    stockChart = new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels: historyData.dates,
+
+            datasets: [{
+                label: `${ticker} PRICE`,
+                data: historyData.prices,
+
+                borderColor: '#00ff00',
+
+                backgroundColor: 'rgba(0,255,0,0.1)',
+
+                tension: 0.2
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ffb000'
+                    }
+                }
+            },
+
+            scales: {
+
+                x: {
+                    ticks: {
+                        color: '#ffb000'
+                    },
+
+                    grid: {
+                        color: '#222'
+                    }
+                },
+
+                y: {
+                    ticks: {
+                        color: '#00ff00'
+                    },
+
+                    grid: {
+                        color: '#222'
+                    }
+                }
+            }
+        }
+    });
+}

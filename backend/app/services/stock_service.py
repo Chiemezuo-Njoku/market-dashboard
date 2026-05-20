@@ -14,3 +14,25 @@ def get_stock_data(ticker: str):
         "price": price,
         "volume": volume,
     }
+# -----------------------------------
+# Historical Chart Data
+# -----------------------------------
+def get_stock_history(ticker: str):
+
+    stock = yf.Ticker(ticker)
+
+    data = stock.history(period="1mo")
+
+    return {
+
+        "ticker": ticker,
+
+        "company":
+            stock.info.get("longName", ticker),
+
+        "dates":
+            data.index.strftime('%Y-%m-%d').tolist(),
+
+        "prices":
+            data["Close"].round(2).tolist()
+    }
