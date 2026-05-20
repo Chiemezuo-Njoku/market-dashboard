@@ -12,20 +12,18 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
     container.innerHTML = `<p>EXECUTING DATA FETCH FOR [${ticker}]...</p>`;
 
     try {
-        const response = await fetch(`https://market-dashboard-2-ttq9.onrender.com/dashboard/${ticker}`);
+        const response = await fetch(`https://market-dashboard-gun5.onrender.com/dashboard/${ticker}`);
         
         if (!response.ok) throw new Error('STATION OFFLINE');
 
         const data = await response.json();
-        loadChart(ticker);
 
-        // Build the News Feed
+        // 1. Build the News Feed items first
         const newsHtml = data.news.map(item => {
             const title = (item.title || item.headline || 'N/A').toUpperCase();
             const source = (item.source || 'INTEL').toUpperCase();
             const sentiment = (item.sentiment || 'NEUTRAL').toUpperCase();
             
-            // Color code sentiment
             let sentColor = 'var(--terminal-amber)';
             if(sentiment.includes('BULLISH') || sentiment.includes('POSITIVE')) sentColor = 'var(--terminal-green)';
             if(sentiment.includes('BEARISH') || sentiment.includes('NEGATIVE')) sentColor = 'var(--terminal-red)';
@@ -42,7 +40,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
             `;
         }).join('');
 
-        // Build Terminal Output
+        // 2. Update the DOM Inner HTML *BEFORE* rendering the chart
         container.innerHTML = `
             <div class="card">
                 <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--terminal-amber); padding-bottom: 5px;">
@@ -63,6 +61,9 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
             </div>
         `;
 
+        // 3. NOW that the interface is painted and stable, load the chart data
+        loadChart(ticker);
+
     } catch (error) {
         container.innerHTML = `
             <div style="border: 1px solid var(--terminal-red); padding: 20px; color: var(--terminal-red);">
@@ -72,73 +73,59 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
         `;
     }
 });
+
 async function loadChart(ticker) {
+    try {
+        const response = await fetch(`https://market-dashboard-gun5.onrender.com/stock/history/${ticker}`);
+        if (!response.ok) throw new Error('History fetch failed');
+        
+        const historyData = await response.json();
+        const ctx = document.getElementById('stockChart');
 
-    const response = await fetch(`https://market-dashboard-2-ttq9.onrender.com/stock/history/${ticker}`);
+        if (!ctx) {
+            console.error("Canvas element 'stockChart' not found in DOM.");
+            return;
+        }
 
-    const historyData = await response.json();
+        // destroy old chart instance safely
+        if (stockChart) {
+            stockChart.destroy();
+        }
 
-    const ctx = document.getElementById('stockChart');
-
-    // destroy old chart
-    if (stockChart) {
-        stockChart.destroy();
-    }
-
-    stockChart = new Chart(ctx, {
-
-        type: 'line',
-
-        data: {
-
-            labels: historyData.dates,
-
-            datasets: [{
-                label: `${ticker} PRICE`,
-                data: historyData.prices,
-
-                borderColor: '#00ff00',
-
-                backgroundColor: 'rgba(0,255,0,0.1)',
-
-                tension: 0.2
-            }]
-        },
-
-        options: {
-
-            responsive: true,
-
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#ffb000'
-                    }
-                }
+        stockChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: historyData.dates,
+                datasets: [{
+                    label: `${ticker} PRICE`,
+                    data: historyData.prices,
+                    borderColor: '#00ff00',
+                    backgroundColor: 'rgba(0,255,0,0.1)',
+                    tension: 0.2
+                }]
             },
-
-            scales: {
-
-                x: {
-                    ticks: {
-                        color: '#ffb000'
-                    },
-
-                    grid: {
-                        color: '#222'
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffb000'
+                        }
                     }
                 },
-
-                y: {
-                    ticks: {
-                        color: '#00ff00'
+                scales: {
+                    x: {
+                        ticks: { color: '#ffb000' },
+                        grid: { color: '#222' }
                     },
-
-                    grid: {
-                        color: '#222'
+                    y: {
+                        ticks: { color: '#00ff00' },
+                        grid: { color: '#222' }
                     }
                 }
             }
-        }
-    });
+        });
+    } catch (err) {
+        console.error("Error drawing chart:", err);
+    }
 }
