@@ -62,6 +62,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
                 </div>
             </div>
         `;
+        await loadChart(ticker);
 
     } catch (error) {
         container.innerHTML = `
@@ -79,7 +80,7 @@ async function loadChart(ticker) {
     const historyData = await response.json();
 
     const ctx = document.getElementById('stockChart');
-
+    if (!ctx) return;
     // destroy old chart
     if (stockChart) {
         stockChart.destroy();
