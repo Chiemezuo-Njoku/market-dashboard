@@ -75,7 +75,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
 });
 async function loadChart(ticker) {
 
-    const response = await fetch(`https://market-dashboard-2-ttq9.onrender.com/stock/history/${ticker}`);
+    const response = await fetch(`https://market-dashboard-gun5.onrender.com/stock/history/${ticker}`);
 
     const historyData = await response.json();
 
