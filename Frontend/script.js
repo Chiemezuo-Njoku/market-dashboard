@@ -12,7 +12,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
     container.innerHTML = `<p>EXECUTING DATA FETCH FOR [${ticker}]...</p>`;
 
     try {
-        const response = await fetch(`https://market-dashboard-2-ttq9.onrender.com/dashboard/${ticker}`);
+        const response = await fetch(`https://market-dashboard-gun5.onrender.com/dashboard/${ticker}`);
         
         if (!response.ok) throw new Error('STATION OFFLINE');
 
