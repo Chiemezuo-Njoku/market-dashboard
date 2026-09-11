@@ -23,12 +23,12 @@ def get_stock_history(ticker: str):
 
     data = stock.history(period="1mo")
 
+    if data.empty:
+        return {"ticker": ticker, "dates": [], "prices": []}
+
     return {
 
         "ticker": ticker,
-
-        "company":
-            stock.info.get("longName", ticker),
 
         "dates":
             data.index.strftime('%Y-%m-%d').tolist(),

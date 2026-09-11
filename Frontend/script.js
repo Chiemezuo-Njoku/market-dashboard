@@ -1,4 +1,5 @@
 let stockChart;
+const API_BASE_URL = 'https://market-dashboard-patch.onrender.com';
 document.getElementById('searchBtn').addEventListener('click', async () => {
     const tickerInput = document.getElementById('tickerInput');
     const ticker = tickerInput.value.toUpperCase();
@@ -12,8 +13,8 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
     container.innerHTML = `<p>EXECUTING DATA FETCH FOR [${ticker}]...</p>`;
 
     try {
-        const response = await fetch(`https://market-dashboard-gun5.onrender.com/dashboard/${ticker}`);
-        
+        const response = await fetch(`${API_BASE_URL}/dashboard/${ticker}`);
+
         if (!response.ok) throw new Error('STATION OFFLINE');
 
         const data = await response.json();
@@ -23,7 +24,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
             const title = (item.title || item.headline || 'N/A').toUpperCase();
             const source = (item.source || 'INTEL').toUpperCase();
             const sentiment = (item.sentiment || 'NEUTRAL').toUpperCase();
-            
+
             let sentColor = 'var(--terminal-amber)';
             if(sentiment.includes('BULLISH') || sentiment.includes('POSITIVE')) sentColor = 'var(--terminal-green)';
             if(sentiment.includes('BEARISH') || sentiment.includes('NEGATIVE')) sentColor = 'var(--terminal-red)';
@@ -49,7 +50,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
                         USD ${Number(data.stock.price).toFixed(2)}
                     </span>
                 </div>
-                
+
                 <div style="margin-top: 15px;">
                     <div style="background: var(--terminal-amber); color: black; padding: 2px 5px; display: inline-block; font-weight: bold; margin-bottom: 10px;">
                         HEADLINES
@@ -62,7 +63,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
         `;
 
         // 3. NOW that the interface is painted and stable, load the chart data
-        loadChart(ticker);
+        await loadChart(ticker);
 
     } catch (error) {
         container.innerHTML = `
@@ -76,9 +77,9 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
 
 async function loadChart(ticker) {
     try {
-        const response = await fetch(`https://market-dashboard-gun5.onrender.com/stock/history/${ticker}`);
+        const response = await fetch(`${API_BASE_URL}/stock/history/${ticker}`);
         if (!response.ok) throw new Error('History fetch failed');
-        
+
         const historyData = await response.json();
         const ctx = document.getElementById('stockChart');
 
