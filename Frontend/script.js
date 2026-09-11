@@ -1,4 +1,5 @@
 let stockChart;
+const API_BASE_URL = 'https://market-dashboard-gun5.onrender.com';
 document.getElementById('searchBtn').addEventListener('click', async () => {
     const tickerInput = document.getElementById('tickerInput');
     const ticker = tickerInput.value.toUpperCase();
@@ -12,7 +13,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
     container.innerHTML = `<p>EXECUTING DATA FETCH FOR [${ticker}]...</p>`;
 
     try {
-        const response = await fetch(`https://market-dashboard-gun5.onrender.com/dashboard/${ticker}`);
+        const response = await fetch(`${API_BASE_URL}/dashboard/${ticker}`);
         
         if (!response.ok) throw new Error('STATION OFFLINE');
 
@@ -75,7 +76,7 @@ document.getElementById('searchBtn').addEventListener('click', async () => {
 });
 async function loadChart(ticker) {
 
-    const response = await fetch(`https://market-dashboard-gun5.onrender.com/stock/history/${ticker}`);
+    const response = await fetch(`${API_BASE_URL}/stock/history/${ticker}`);
 
     const historyData = await response.json();
 
@@ -142,4 +143,4 @@ async function loadChart(ticker) {
             }
         }
     });
-}
+} 
